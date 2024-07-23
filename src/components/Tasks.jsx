@@ -3,18 +3,18 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import TaskCard from './TaskCard'
-
+import instance from '../utils/instance'
 
 function addNewTask(task) {
-    return axios.post('http://localhost:8000/tasks', task)
+    return instance.post('/tasks', task)
 }
 function updateStage(id, stage) {
     // console.log('Modified Stage: ', stage)
     const newStage = { stage: stage }
-    return axios.patch(`http://localhost:8000/tasks/${id}`, newStage)
+    return instance.patch(`/tasks/${id}`, newStage)
 }
 function updateTask(id, task) {
-    return axios.put(`http://localhost:8000/tasks/${id}`, task)
+    return instance.put(`/tasks/${id}`, task)
 }
 function Tasks() {
     const navigate = useNavigate()
@@ -29,7 +29,7 @@ function Tasks() {
     const [editingPostID, setEditingPostID] = useState()
     const [task, setTask] = useState({ userID: userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
 
-    const { data, refetch } = useQuery({ queryKey: ['getTasks'], queryFn: () => { return axios.get('http://localhost:8000/tasks', { headers: { userID: userID } }) } })
+    const { data, refetch } = useQuery({ queryKey: ['getTasks'], queryFn: () => { return instance.get('/tasks', { headers: { userID: userID } }) } })
     const { mutate: addMutation } = useMutation({
         mutationFn: () => addNewTask(task),
         onSuccess: () => {
@@ -91,8 +91,8 @@ function Tasks() {
                 </div>
             </div>
             <div className='lg:grid grid-cols-3 gap-5 mt-5'>
-                <div onDragOver={(e) => e.preventDefault()} onDrop={() => droppedInStage('todo')} className='border shadow-md p-3'>
-                    <h1 className='bg-blue-600 w-full px-2 mb-5 text-white py-1 font-semibold'>TODO</h1>
+                <div onDragOver={(e) => e.preventDefault()} onDrop={() => droppedInStage('todo')} className='border shadow-md p-3 max-h-screen h-fit overflow-y-scroll relative'>
+                    <h1 className='bg-blue-600 w-full px-2 mb-5 text-white py-1 font-semibold sticky top-0'>TODO</h1>
                     {data?.data.map((item) => {
                         if (item.stage === 'todo') {
                             return (
@@ -101,8 +101,8 @@ function Tasks() {
                         }
                     })}
                 </div>
-                <div onDragOver={(e) => e.preventDefault()} onDrop={() => droppedInStage('inProcess')} className='border shadow-md p-3'>
-                    <h1 className='bg-blue-600 w-full px-2 mb-5 text-white py-1 font-semibold'>IN PROCESS</h1>
+                <div onDragOver={(e) => e.preventDefault()} onDrop={() => droppedInStage('inProcess')} className='border shadow-md p-3 max-h-screen h-fit overflow-y-scroll relative'>
+                    <h1 className='bg-blue-600 w-full px-2 mb-5 text-white py-1 font-semibold sticky top-0'>IN PROCESS</h1>
                     {data?.data.map((item) => {
                         if (item.stage === 'inProcess') {
                             return (
@@ -111,8 +111,8 @@ function Tasks() {
                         }
                     })}
                 </div>
-                <div onDragOver={(e) => e.preventDefault()} onDrop={() => droppedInStage('done')} className='border shadow-md p-3'>
-                    <h1 className='bg-blue-600 w-full px-2 mb-5 text-white py-1 font-semibold'>DONE</h1>
+                <div onDragOver={(e) => e.preventDefault()} onDrop={() => droppedInStage('done')} className='border shadow-md p-3 max-h-screen h-fit overflow-y-scroll relative'>
+                    <h1 className='bg-blue-600 w-full px-2 mb-5 text-white py-1 font-semibold sticky top-0'>DONE</h1>
                     {data?.data.map((item) => {
                         if (item.stage === 'done') {
                             return (

@@ -4,15 +4,16 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import instance from '../utils/instance';
 
 import { ToastContainer, toast } from 'react-custom-alert';
 import 'react-custom-alert/dist/index.css';
 
 function sendLoginUser(user) {
-    return axios.post('http://localhost:8000/login', user)
+    return instance.post('/login', user)
 }
 function sendGoogleUser(user) {
-    return axios.post('http://localhost:8000/google-login', user)
+    return instance.post('/google-login', user)
 }
 function Login() {
     const navigate = useNavigate()

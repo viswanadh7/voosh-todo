@@ -4,12 +4,13 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import instance from '../utils/instance';
 
 import { ToastContainer, toast } from 'react-custom-alert';
 import 'react-custom-alert/dist/index.css';
 
 function createNewUser(user) {
-    return axios.post('http://localhost:8000/register', user)
+    return instance.post('/register', user)
 }
 
 function Register() {

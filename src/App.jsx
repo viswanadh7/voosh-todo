@@ -5,6 +5,7 @@ import Tasks from './components/Tasks'
 import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Register from "./components/Register"
+import TaskDetails from "./components/TaskDetails";
 
 const queryClient = new QueryClient()
 
@@ -16,6 +17,7 @@ function App() {
           <Navbar />
           <Routes>
             <Route path="/" element={<Tasks />} />
+            <Route path="/:id" element={<TaskDetails />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>
