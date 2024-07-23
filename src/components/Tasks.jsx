@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import TaskCard from './TaskCard'
 
@@ -16,19 +17,24 @@ function updateTask(id, task) {
     return axios.put(`http://localhost:8000/tasks/${id}`, task)
 }
 function Tasks() {
+    const navigate = useNavigate()
+    const userID = sessionStorage.getItem('userID')
+    if (userID === null) {
+        navigate('/login')
+    }
     const [showForm, setShowForm] = useState(false)
     const [draggingCard, setDraggingCard] = useState(null)
     const [stageByDrop, setStageByDrop] = useState()
     const [isEditing, setIsEditing] = useState(false)
     const [editingPostID, setEditingPostID] = useState()
-    const [task, setTask] = useState({ heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
+    const [task, setTask] = useState({ userID: userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
 
-    const { data, refetch } = useQuery({ queryKey: ['getTasks'], queryFn: () => { return axios.get('http://localhost:8000/tasks') } })
+    const { data, refetch } = useQuery({ queryKey: ['getTasks'], queryFn: () => { return axios.get('http://localhost:8000/tasks', { headers: { userID: userID } }) } })
     const { mutate: addMutation } = useMutation({
         mutationFn: () => addNewTask(task),
         onSuccess: () => {
             refetch();
-            setTask({ heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
+            setTask({ userID: userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
         }
     });
 
@@ -41,7 +47,7 @@ function Tasks() {
         mutationFn: () => updateTask(editingPostID, task),
         onSuccess: () => {
             refetch();
-            setTask({ heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
+            setTask({ userID: userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
         },
     });
     function handleTaskSubmit(e) {
