@@ -27,7 +27,7 @@ function TaskCard({ item, refetch, setDraggingCard, setIsEditing, setTask, setEd
                 <div className='flex gap-3'>
                     <button onClick={() => deleteMutate()} className='bg-red-600 rounded text-white px-3 py-1'>Delete</button>
                     <button onClick={() => { setIsEditing(true); setTask(item); setEditingPostID(item._id) }} className='bg-blue-500 rounded text-white px-3 py-1'>Edit</button>
-                    <Link to={`/task/${item._id}`} className='bg-blue-700 rounded text-white px-3 py-1'>View Details</Link>
+                    <Link to={`/home/task/${item._id}`} className='bg-blue-700 rounded text-white px-3 py-1'>View Details</Link>
                 </div>
             </div>
         </div>

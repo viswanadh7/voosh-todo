@@ -24,7 +24,7 @@ function Login() {
     const { mutate } = useMutation({
         mutationFn: () => sendLoginUser(userLogin),
         // onSuccess: (response) => { sessionStorage.setItem('userID', response.data); console.log("login success"); navigate('/') },
-        onSuccess: (response) => { auth.login(response.data); navigate('/') },
+        onSuccess: (response) => { auth.login(response.data); navigate('/home') },
         onError: (error) => { toast.error(error.response.data) }
     });
 
@@ -34,7 +34,7 @@ function Login() {
             auth.login(response.data)
             // sessionStorage.setItem("userID", response.data);
             // console.log("login success");
-            navigate("/");
+            navigate("/home");
         },
         onError: (error) => console.log(error.message)
     });

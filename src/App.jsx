@@ -9,6 +9,7 @@ import TaskDetails from "./components/TaskDetails";
 // import { AuthProvider } from "./utils/Auth";
 import { AuthProvider } from "./utils/Auth";
 import NotFound from "./components/NotFound";
+import Redirect from "./components/Redirect";
 const queryClient = new QueryClient()
 
 function App() {
@@ -19,8 +20,9 @@ function App() {
           <BrowserRouter>
             <Navbar />
             <Routes>
-              <Route path="/" element={<Tasks />} />
-              <Route path="/task/:id" element={<TaskDetails />} />
+              <Route path="/" element={<Redirect />} />
+              <Route path="/home" element={<Tasks />} />
+              <Route path="/home/task/:id" element={<TaskDetails />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="*" element={<NotFound />} />

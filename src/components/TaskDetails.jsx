@@ -16,7 +16,7 @@ function TaskDetails() {
                 <p className='text-gray-800'>{data?.data.description}</p>
                 <p className='text-sm font-extralight my-5'>Created at: {data?.data.date}</p>
                 <div className='col-span-1 flex justify-end'>
-                    <Link to='/' className='bg-gray-600 text-white px-4 py-1 rounded-md text-lg'>Close</Link>
+                    <Link to='/home' className='bg-gray-600 text-white px-4 py-1 rounded-md text-lg'>Close</Link>
                 </div>
             </div>
             <div className='col-span-1'></div>

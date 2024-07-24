@@ -80,7 +80,7 @@ function Tasks() {
                     </div>
                 </form>
 
-                <div className='shadow-md border py-3 flex justify-between px-5'>
+                {/* <div className='shadow-md border py-3 flex justify-between px-5'>
                     <div className='flex gap-3'>
                         <p>Search:</p>
                         <input className='border rounded w-full px-3' type="text" name="" id="" placeholder='Search...' />
@@ -89,7 +89,7 @@ function Tasks() {
                         <p>Sort by:</p>
                         <button>Recent</button>
                     </div>
-                </div>
+                </div> */}
             </div>
             <div className='lg:grid grid-cols-3 gap-5 mt-5'>
                 <div onDragOver={(e) => e.preventDefault()} onDrop={() => droppedInStage('todo')} className='border shadow-md p-3 max-h-screen h-fit overflow-y-scroll relative'>
