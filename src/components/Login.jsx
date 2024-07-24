@@ -8,6 +8,7 @@ import instance from '../utils/instance';
 
 import { ToastContainer, toast } from 'react-custom-alert';
 import 'react-custom-alert/dist/index.css';
+import { useAuth } from '../utils/Auth';
 
 function sendLoginUser(user) {
     return instance.post('/login', user)
@@ -16,20 +17,23 @@ function sendGoogleUser(user) {
     return instance.post('/google-login', user)
 }
 function Login() {
+    const auth = useAuth()
     const navigate = useNavigate()
     const [userLogin, setUserLogin] = useState({ email: "", password: "" })
 
     const { mutate } = useMutation({
         mutationFn: () => sendLoginUser(userLogin),
-        onSuccess: (response) => { sessionStorage.setItem('userID', response.data); console.log("login success"); navigate('/') },
-        onError: (error) => toast.error(error.response.data)
+        // onSuccess: (response) => { sessionStorage.setItem('userID', response.data); console.log("login success"); navigate('/') },
+        onSuccess: (response) => { auth.login(response.data); navigate('/') },
+        onError: (error) => { toast.error(error.response.data) }
     });
 
     const { mutate: googleUserLogin } = useMutation({
         mutationFn: (user) => sendGoogleUser(user),
         onSuccess: (response) => {
-            sessionStorage.setItem("userID", response.data);
-            console.log("login success");
+            auth.login(response.data)
+            // sessionStorage.setItem("userID", response.data);
+            // console.log("login success");
             navigate("/");
         },
         onError: (error) => console.log(error.message)

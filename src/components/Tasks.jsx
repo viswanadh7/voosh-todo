@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import TaskCard from './TaskCard'
 import instance from '../utils/instance'
+import { useAuth } from '../utils/Auth'
 
 function addNewTask(task) {
     return instance.post('/tasks', task)
@@ -18,8 +19,8 @@ function updateTask(id, task) {
 }
 function Tasks() {
     const navigate = useNavigate()
-    const userID = sessionStorage.getItem('userID')
-    if (userID === null) {
+    const auth = useAuth()
+    if (auth.userID === null) {
         navigate('/login')
     }
     const [showForm, setShowForm] = useState(false)
@@ -27,14 +28,14 @@ function Tasks() {
     const [stageByDrop, setStageByDrop] = useState()
     const [isEditing, setIsEditing] = useState(false)
     const [editingPostID, setEditingPostID] = useState()
-    const [task, setTask] = useState({ userID: userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
+    const [task, setTask] = useState({ userID: auth.userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
 
-    const { data, refetch } = useQuery({ queryKey: ['getTasks'], queryFn: () => { return instance.get('/tasks', { headers: { userID: userID } }) } })
+    const { data, refetch } = useQuery({ queryKey: ['getTasks'], queryFn: () => { return instance.get('/tasks', { headers: { userID: auth.userID } }) } })
     const { mutate: addMutation } = useMutation({
         mutationFn: () => addNewTask(task),
         onSuccess: () => {
             refetch();
-            setTask({ userID: userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
+            setTask({ userID: auth.userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
         }
     });
 
@@ -47,7 +48,7 @@ function Tasks() {
         mutationFn: () => updateTask(editingPostID, task),
         onSuccess: () => {
             refetch();
-            setTask({ userID: userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
+            setTask({ userID: auth.userID, heading: '', description: '', date: Date().toLocaleString(), stage: 'todo' })
         },
     });
     function handleTaskSubmit(e) {

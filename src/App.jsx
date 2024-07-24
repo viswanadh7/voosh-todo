@@ -6,24 +6,29 @@ import Navbar from "./components/Navbar"
 import Login from "./components/Login"
 import Register from "./components/Register"
 import TaskDetails from "./components/TaskDetails";
-
+// import { AuthProvider } from "./utils/Auth";
+import { AuthProvider } from "./utils/Auth";
+import NotFound from "./components/NotFound";
 const queryClient = new QueryClient()
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <GoogleOAuthProvider clientId="965950225748-ndrscnb1ugk5ehp1fjtovrdg46i03vdj.apps.googleusercontent.com">
-        <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Tasks />} />
-            <Route path="/:id" element={<TaskDetails />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-          </Routes>
-        </BrowserRouter>
-      </GoogleOAuthProvider>
-    </QueryClientProvider>
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <GoogleOAuthProvider clientId="965950225748-ndrscnb1ugk5ehp1fjtovrdg46i03vdj.apps.googleusercontent.com">
+          <BrowserRouter>
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Tasks />} />
+              <Route path="/task/:id" element={<TaskDetails />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </GoogleOAuthProvider>
+      </QueryClientProvider>
+    </AuthProvider>
   )
 }
 
